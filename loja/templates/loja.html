@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+<h3>Loja</h3>
+
+<div style="display: flex;">
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <p>Preço</p>
+        <input type="number" name="preco_minimo" value={{ minimo }}>
+        <input type="number" name="preco_maximo" value={{ maximo }}>
+
+        <p>Tamanho</p>
+        {% for tamanho in tamanhos %}
+        <input type="radio" name="tamanho" value="{{ tamanho }}">
+        <label for="{{ tamanho }}">{{ tamanho }}</label>
+        {% endfor %}
+
+        <p>Categoria</p>
+        {% for categoria in categorias %}
+        <input type="radio" name="categoria" value="{{ categoria.slug }}">
+        <label for="{{ categoria.slug }}">{{ categoria.nome }}</label>
+        {% endfor %}
+
+        <p>Tipo</p>
+        {% for tipo in tipos_navegacao %}
+        <input type="radio" name="tipo" value="{{ tipo.slug }}">
+        <label for="{{ tipo.slug }}">{{ tipo.nome }}</label>
+        {% endfor %}
+        <button type="submit">Aplicar Filtros</button>
+    </form>
+
+    <div>
+        Ordenar por:
+        <ul>
+            <li><a href="#" class="item-ordenar" name="menor-preco">Menor Preço</a></li>
+            <li><a href="#" class="item-ordenar" name="maior-preco">Maior Preço</a></li>
+            <li><a href="#" class="item-ordenar" name="mais-vendidos">Mais Vendidos</a></li>
+        </ul>
+        {% for produto in produtos %}
+
+        <a href="{% url 'ver_produto' produto.id %}">
+            <img src="{{ produto.imagem.url }}" width="300" height="450">
+        </a>
+        <p>Produto: {{ produto.nome }}</p>
+        <p>Preço: {{ produto.preco }}</p>
+
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

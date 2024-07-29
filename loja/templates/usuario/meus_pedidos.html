@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h3>Minha Conta</h3>
+<a href="{% url 'minha_conta' %}">Minha Conta</a>
+{% for pedido in pedidos %}
+<div style="display: flex;">
+    <p>Data: {{ pedido.data_finalizacao }}</p>
+    <p>ID Pedido: {{ pedido.id }}</p>
+    <p>Código Transação: {{ pedido.codigo_transacao }}</p>
+    <p>Preço: {{ pedido.preco_total }}</p>
+    <p>Endereço: {{pedido.endereco.cep}} - {{pedido.endereco.cidade}} - {{ pedido.endereco.estado }} </p>
+
+    {% for item in pedido.itens %}
+    <img src="{{item.item_estoque.produto.imagem.url}}" width="50" height="75">
+    <p>Produto: {{ item.item_estoque.produto.nome }}</p>
+    <p>Quantidade: {{item.quantidade}} </p>
+    <p>Preço: {{ item.preco_total }}</p>
+    {% endfor %}
+
+</div>
+{% endfor %}
+
+{% endblock %}
