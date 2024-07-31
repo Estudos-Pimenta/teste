@@ -12,6 +12,7 @@ admin.site.register(Banner)
 admin.site.register(Cor)
 admin.site.register(ItensPedido)
 admin.site.register(Pedido)
+admin.site.register(Pagamento)
 
 
 

@@ -117,5 +117,11 @@ class Banner(models.Model):
     def __str__(self):
         return f"{self.link_destino} - Ativo: {self.ativo}"
 
+class Pagamento(models.Model):
+    id_pagamento = models.CharField(max_length=400)
+    pedido = models.ForeignKey(Pedido, null=True, blank=True, on_delete=models.SET_NULL)
+    aprovado = models.BooleanField(default=False)
+
+
 
 

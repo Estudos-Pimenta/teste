@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from datetime import datetime
+from .api_mercadopago import criar_pagamento
+from django.urls import reverse
 
 # Create your views here.
 def homepage(request):
@@ -148,15 +150,17 @@ def finalizar_pedido(request, id_pedido):
         dados = request.POST.dict()
 
         total = dados.get("total")
+        total = float(total.replace(",", "."))
         pedido = Pedido.objects.get(id=id_pedido)
 
-        if total != pedido.preco_total:
+        if total != float(pedido.preco_total):
             erro = "preco"
 
         if not "endereco" in dados:
             erro = "endereco"
         else:
-            endereco = dados.get("endereco")
+            id_endereco = dados.get("endereco")
+            endereco = Endereco.objects.get(id=id_endereco)
             pedido.endereco = endereco
 
         if not request.user.is_authenticated:
@@ -181,10 +185,19 @@ def finalizar_pedido(request, id_pedido):
             context = {"erro": erro, "pedido": pedido, "enderecos": enderecos}
             return render(request, "checkout.html", context)
         else:
-            # TODO pagamento do usuário
-            return redirect("checkout", erro)
+            itens_pedido = ItensPedido.objects.filter(pedido=pedido)
+            link = request.build_absolute_uri(reverse('finalizar_pagamento'))
+            link_pagamento, id_pagamento = criar_pagamento(itens_pedido, link)
+            pagamento = Pagamento.objects.create(id_pagamento=id_pagamento, pedido=pedido)
+            pagamento.save()
+            return redirect(link_pagamento)
     else:
         return redirect("loja")
+    
+def finalizar_pagamento(request):
+    print(request.GET.dict())
+    return redirect('loja')
+
 
 def adicionar_endereco(request):
     if request.method == "POST":
