@@ -15,12 +15,16 @@ urlpatterns = [
     path('adicionarendereco/', adicionar_endereco, name="adicionar_endereco"),
     path('finalizarpedido/<int:id_pedido>/', finalizar_pedido, name="finalizar_pedido"),
     path('finalizarpagamento/', finalizar_pagamento, name="finalizar_pagamento"),
-
+    path('pedidoaprovado/<int:id_pedido>/', pedido_aprovado, name="pedido_aprovado"),
+    
     path('minhaconta/', minha_conta, name="minha_conta"),
     path('meuspedidos/', meus_pedidos, name="meus_pedidos"),
     path('fazerlogin/', fazer_login, name="fazer_login"),
     path('criarconta/', criar_conta, name="criar_conta"),
     path('fazerlogout/', fazer_logout, name="fazer_logout"),
+
+    path('gerenciarloja/', gerenciar_loja, name="gerenciar_loja"),
+    path('exportarrelatorio/<str:relatorio>/', exportar_relatorio, name="exportar_relatorio"),
 
     path("password_change/", views.PasswordChangeView.as_view(), name="password_change"),
     path("password_change/done/", views.PasswordChangeDoneView.as_view(), name="password_change_done"),

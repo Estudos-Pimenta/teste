@@ -1,4 +1,6 @@
 from django.db.models import Max, Min
+from django.core.mail import send_mail
+
 
 def filtrar_produtos(produtos, filtro):
     if filtro:
@@ -28,3 +30,13 @@ def ordenar_produtos(produtos, ordem):
         produtos = list(produtos)  # Converte para uma lista
         produtos = sorted(produtos, key=lambda produto: produto.total_vendas(), reverse=True)
     return produtos
+
+def enviar_email_compra(pedido):
+    email = pedido.cliente.email
+    assunto = f'Pedido Aprovado com Sucesso: {pedido.id}.'
+    corpo = f'''Parabéns! Seu pedido foi aprovado.
+    ID do pedido: {pedido.id}
+    Valor Total: {pedido.preco_total}
+    Quantidade de Produtos: {pedido.quantidade_total}'''
+    remetente = 'weslleycorreapimenta2002@gmail.com'
+    send_mail(assunto, corpo, remetente, [email])

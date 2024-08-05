@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h3>Seu Pedido foi Aprovado</h3>
+<a href="{% url 'loja' %}">Fazer um novo Pedido</a>
+<h3>Você receberá um e-mail com todos os detalhes do seu pedido.</h3>
+<div style="display: flex;">
+    <p>Data: {{ pedido.data_finalizacao }}</p>
+    <p>ID Pedido: {{ pedido.id }}</p>
+    <p>Código Transação: {{ pedido.codigo_transacao }}</p>
+    <p>Preço: {{ pedido.preco_total }}</p>
+    <p>Endereço: {{pedido.endereco.cep}} - {{pedido.endereco.cidade}} - {{ pedido.endereco.estado }} </p>
+
+    {% for item in pedido.itens %}
+    <img src="{{item.item_estoque.produto.imagem.url}}" width="50" height="75">
+    <p>Produto: {{ item.item_estoque.produto.nome }}</p>
+    <p>Quantidade: {{item.quantidade}} </p>
+    <p>Preço: {{ item.preco_total }}</p>
+    {% endfor %}
+
+</div>
+<hr>
+{% endblock %}

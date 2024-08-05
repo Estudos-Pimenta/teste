@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'loja.novos_context.carrinho',
                 'loja.novos_context.categorias_tipos',
+                'loja.novos_context.faz_parte_equipe',
             ],
         },
     },
@@ -135,4 +136,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'fazer_login'
 #printa os email da redefinição
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "weslleycorreapimenta2002@gmail.com"
+EMAIL_HOST_PASSWORD = "ibxhszecesnzwtcm"
+

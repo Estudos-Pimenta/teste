@@ -22,3 +22,10 @@ def categorias_tipos(request):
     categorias_navegacao = Categoria.objects.all()
     tipos_navegacao = Tipo.objects.all()
     return {"categorias_navegacao": categorias_navegacao, "tipos_navegacao": tipos_navegacao}
+
+def faz_parte_equipe(request):
+    equipe = False
+    if request.user.is_authenticated:
+        if request.user.groups.filter(name="equipe").exists():
+            equipe = True
+    return {"equipe": equipe}

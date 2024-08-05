@@ -19,6 +19,7 @@ def criar_pagamento(itens_pedido, link):
     #valor total
     preference_data = {
         "items": itens,
+        "auto_return": "all",
         "back_urls":{
             "success": link,
             "pending": link,

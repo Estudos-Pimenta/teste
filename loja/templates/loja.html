@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load l10n %}
 {% block body %}
 
 <h3>Loja</h3>
@@ -10,8 +10,14 @@
     <form method="POST" action="">
         {% csrf_token %}
         <p>Preço</p>
-        <input type="number" name="preco_minimo" value={{ minimo }}>
-        <input type="number" name="preco_maximo" value={{ maximo }}>
+        <input type="number" name="preco_minimo" value=
+        {% localize off %}
+        {{ minimo }}
+        {% endlocalize %}>
+        <input type="number" name="preco_maximo" value=
+        {% localize off %}
+        {{ maximo }}
+        {% endlocalize %}>
 
         <p>Tamanho</p>
         {% for tamanho in tamanhos %}
