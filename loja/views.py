@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import *
 import uuid
-from .utils import filtrar_produtos, preco_minimo_maximo, ordenar_produtos, enviar_email_compra
+from .utils import filtrar_produtos, preco_minimo_maximo, ordenar_produtos, enviar_email_compra, exportar_csv
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.validators import validate_email
@@ -375,5 +375,13 @@ def gerenciar_loja(request):
 
 @login_required
 def exportar_relatorio(request, relatorio):
-    print(relatorio)
-    return redirect('gerenciar_loja')
+    if request.user.groups.filter(name="equipe").exists():
+        if relatorio == "pedido":
+            informacoes = Pedido.objects.filter(finalizado=True)
+        elif relatorio == "cliente":
+            informacoes = Cliente.objects.all()
+        elif relatorio == "endereco":
+            informacoes = Endereco.objects.all()
+        return exportar_csv(informacoes)
+    else:
+        return redirect('gerenciar_loja')
