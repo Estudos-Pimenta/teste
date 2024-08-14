@@ -1,25 +1,53 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block body %}
+<main class="principal">
+    <section class="conta">
+      <div class="conta__container">
+        <div class="checkout__titulos">
+          <p class="checkout__titulo">Meus pedidos</p>
+        </div>
 
-<h3>Minha Conta</h3>
-<a href="{% url 'minha_conta' %}">Minha Conta</a>
-{% for pedido in pedidos %}
-<div style="display: flex;">
-    <p>Data: {{ pedido.data_finalizacao }}</p>
-    <p>ID Pedido: {{ pedido.id }}</p>
-    <p>Código Transação: {{ pedido.codigo_transacao }}</p>
-    <p>Preço: {{ pedido.preco_total }}</p>
-    <p>Endereço: {{pedido.endereco.cep}} - {{pedido.endereco.cidade}} - {{ pedido.endereco.estado }} </p>
+        {% for pedido in pedidos %}
+        <div class="pedido">
+          <div class="pedido__cabecalho">
+            <div>
+              <p><b>Data do pedido</b></p>
+              <p>{{ pedido.data_finalizacao }}</p>
+            </div>
 
-    {% for item in pedido.itens %}
-    <img src="{{item.item_estoque.produto.imagem.url}}" width="50" height="75">
-    <p>Produto: {{ item.item_estoque.produto.nome }}</p>
-    <p>Quantidade: {{item.quantidade}} </p>
-    <p>Preço: {{ item.preco_total }}</p>
-    {% endfor %}
+            <div>
+              <p><b>Total</b></p>
+              <p>R$ {{ pedido.preco_total }}</p>
+            </div>
 
-</div>
-{% endfor %}
+            <div>
+              <p><b>Número do pedido</b></p>
+              <p>{{ pedido.codigo_transacao }}</p>
+            </div>
+          </div>
 
+          <div class="pedido__corpo">
+            {% for item in pedido.itens %}
+            <div class="tabela__imagem">
+              <img
+                src="{{ item.item_estoque.produto.imagem.url }}"
+                alt="{{ item.item_estoque.produto.nome }}"
+              />
+            </div>
+            <div class="tabela__produto-textos">
+              <p><b>{{ item.item_estoque.produto.nome }}</b></p>
+              <p><b>Quantidade:</b> {{ item.quantidade }}</p>
+              <p><b>Preço:</b> {{ item.preco_total }}</p>
+            </div>
+            {% endfor %}
+          </div>
+          <p style="margin: 10px">Endereço: {{ pedido.endereco.cep }}, {{ pedido.endereco.cidade }}-{{ pedido.endereco.estado }}</p>
+        </div>
+        {% endfor %}
+
+      </div>
+    </section>
+  </main>
 {% endblock %}
